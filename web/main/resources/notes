@@ -1,0 +1,7 @@
+//save info body
+create database info;
+use info;
+insert into information values(1,"This is dashboard details");
+insert into information values(2,"This is incidents details");
+insert into information values(3,"This is customers details");
+insert into information values(4,"This is about details");

@@ -47,6 +47,7 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
                     type: 'GET',
                     success: function (data)
                     {
+                        console.log(data);
                         self.info(data.info);
                     }
                 });

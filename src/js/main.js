@@ -53,7 +53,7 @@ require(['ojs/ojcore', 'knockout', 'appController', 'jquery', 'ojs/ojknockout',
       function init() {
         oj.Router.sync().then(
           function () {
-             window.apiDomain = "https://172.22.148.128:8085";
+             window.apiDomain = "http://sp19-cs411-02.cs.illinois.edu:8080";
             app.loadModule();
             // Bind your ViewModel for the content of the whole page body.
             ko.applyBindings(app, document.getElementById('globalBody'));
