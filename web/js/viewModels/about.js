@@ -44,7 +44,7 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
       self.info = ko.observable("Rest api data failed");
                 
                 $.ajax({
-                    url: "localhost:8085/claims/about",
+                    url: window.apiDomain + "/claims/about",
                     type: 'GET',
                     success: function (data)
                     {
