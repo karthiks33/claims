@@ -1,0 +1,22 @@
+/*
+    Document   : override
+    Created on : <date>
+    Author     : <author>
+    Description:
+        This is where any of your application specific styles should be included
+*/
+
+.healthcare-img{
+    content: '';
+    display: block;
+    height: 40px;  /*height of icon */
+    width: 40px;  /*width of icon */
+    position: absolute;
+      /*where to replace the icon */
+    top: 0px;
+    left: -40px;
+      /*background */
+    background: #F8E6AE url("images/HealthcareImg.jpg") no-repeat 0px 0px;
+}
+
+.healthcare-img2:after{content:url("images/HealthcareImg.jpg")}
