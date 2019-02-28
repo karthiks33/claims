@@ -9,7 +9,7 @@
 
     <appender name="FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/datapi/server.log</file>
+        <file>/var/log/claims/server.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%d{MM-dd-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n
             </pattern>
@@ -30,7 +30,7 @@
 
     <!--for console change to STDOUT-->
     <root level="info">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>
