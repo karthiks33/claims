@@ -2,9 +2,41 @@
  Copyright (c) 2014, 2019, Oracle and/or its affiliates.
  The Universal Permissive License (UPL), Version 1.0
  -->
-<div class="oj-hybrid-padding">
-  <h1>Dashboard Content Area</h1>
+ <div class="oj-hybrid-padding" >
+  <h1>Claims Data</h1>
   <div>
        <div data-bind="text: info" > </div>
+       <oj-table id='table' style="height:90vh;" aria-label='Claims Table'
+                                        data='[[dataprovider]]'
+                                        selection-mode='{"row": "multiple", "column": "multiple"}'
+                                        dnd='{"reorder": {"columns": "enabled"}}'
+                                        scroll-policy='loadMoreOnScroll'
+                                        scroll-policy-options='{"fetchSize": 50}'
+                                        columns='[{"headerText": "Member Id", 
+                                                   "field": "id",
+                                                   "headerClassName": "oj-sm-only-hide",
+                                                   "className": "oj-sm-only-hide",
+                                                   "resizable": "enabled"},
+                                                  {"headerText": "Provider Id", 
+                                                   "field": "providerId",
+                                                   "resizable": "enabled"},
+                                                  {"headerText": "Vendor", 
+                                                   "field": "vendor",
+                                                   "headerClassName": "oj-sm-only-hide",
+                                                   "className": "oj-sm-only-hide",
+                                                   "resizable": "enabled"},
+                                                  {"headerText": "Pcp", "field": "pcp","resizable": "enabled"},
+                                                  {"headerText": "year", "field": "year","resizable": "enabled"},
+                                                  {"headerText": "speciality", "field": "speciality","resizable": "enabled"},
+                                                  {"headerText": "placeSvc", "field": "placeSvc","resizable": "enabled"},
+                                                  {"headerText": "payDelay", "field": "payDelay","resizable": "enabled"},
+                                                  {"headerText": "lengthOfStay", "field": "lengthOfStay","resizable": "enabled"},
+                                                  {"headerText": "dsfs", "field": "dsfs","resizable": "enabled"},
+                                                  {"headerText": "primaryConditionGroup", "field": "primaryConditionGroup","resizable": "enabled"},
+                                                  {"headerText": "charlsonIndex", "field": "charlsonIndex","resizable": "enabled"}
+                                                  
+                                                  ]'
+                                        style='width: 100%; height: 200px;'>
+        </oj-table>
   </div>
 </div>

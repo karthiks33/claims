@@ -41,16 +41,8 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
         // Implement if needed
       };
       
-      self.info = ko.observable("Rest api data failed");
-                
-                $.ajax({
-                    url: window.apiDomain + "/claims/fetch/about",
-                    type: 'GET',
-                    success: function (data)
-                    {
-                        self.info(data.info);
-                    }
-                });
+      self.info = ko.observable("In Healthcare, Insurance Claims is a major source of data that provides information on wide spectrum of patient’s care. There are numerous analyses that can be conducted on claims data to derive information and knowledge to drive decision making. Our database application is aimed to create a system that provides an interface to work with insurance claims and study them.");
+      self.info(self.info()+"   \n \n Analytical study based on the persistent Insurance claims offers more insight into hospital management, patient records, diagnoses etc. Such insights are likely to play a major role in helping health systems improve costs and quality, identify at-risk populations, connect with consumers, and better understand performance.");
     }
 
     /*

@@ -4,12 +4,12 @@
  * The Universal Permissive License (UPL), Version 1.0
  */
 /*
- * Your customer ViewModel code goes here
+ * Your incidents ViewModel code goes here
  */
 define(['ojs/ojcore', 'knockout', 'jquery'],
  function(oj, ko, $) {
   
-    function CustomerViewModel() {
+    function IncidentsViewModel() {
       var self = this;
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
@@ -40,16 +40,16 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
       self.transitionCompleted = function() {
         // Implement if needed
       };
-      self.info = ko.observable("Rest api data failed");
+      self.info = ko.observable("Show analytics here");
                 
-                $.ajax({
-                    url: window.apiDomain + "/claims/fetch/customers",
-                    type: 'GET',
-                    success: function (data)
-                    {
-                        self.info(data.info);
-                    }
-                });
+//                $.ajax({
+//                    url: window.apiDomain + "/claims/fetch/incidents",
+//                    type: 'GET',
+//                    success: function (data)
+//                    {
+//                        self.info(data.info);
+//                    }
+//                });
     }
 
     /*
@@ -57,6 +57,6 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
      * each time the view is displayed.  Return an instance of the ViewModel if
      * only one instance of the ViewModel is needed.
      */
-    return new CustomerViewModel();
+    return new IncidentsViewModel();
   }
 );

@@ -40,16 +40,16 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
       self.transitionCompleted = function() {
         // Implement if needed
       };
-      self.info = ko.observable("Rest api data failed");
+      self.info = ko.observable("Show patients data here");
                 
-                $.ajax({
-                    url: window.apiDomain + "/claims/fetch/customers",
-                    type: 'GET',
-                    success: function (data)
-                    {
-                        self.info(data.info);
-                    }
-                });
+//                $.ajax({
+//                    url: window.apiDomain + "/claims/fetch/customers",
+//                    type: 'GET',
+//                    success: function (data)
+//                    {
+//                        self.info(data.info);
+//                    }
+//                });
     }
 
     /*

@@ -6,8 +6,8 @@
 /*
  * Your dashboard ViewModel code goes here
  */
-define(['ojs/ojcore', 'knockout', 'jquery'],
-        function (oj, ko, $) {
+define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', 'ojs/ojknockout', 'ojs/ojtable'],
+        function (oj, ko, $, ArrayDataProvider) {
 
             function DashboardViewModel() {
                 var self = this;
@@ -40,19 +40,24 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
                 self.transitionCompleted = function () {
                     // Implement if needed
                 };
-                self.info = ko.observable("Rest api data failed");
-                
+                self.info = ko.observable("Below data is select query from claims table.");
+                self.claimsArray = ko.observableArray();
+                self.dataprovider = ko.observable(new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'}));
+                //new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'});
                 $.ajax({
-                    url: window.apiDomain + "/claims/fetch/dashboard",
+                    url: window.apiDomain + "/claims/listClaims",
                     type: 'GET',
                     success: function (data)
                     {
-                        console.log(data);
-                        self.info(data.info);
+                       // console.log(data);
+                       // self.info(data.length);
+                        self.claimsArray(data);
+                        console.log(self.claimsArray());
+                        self.dataprovider(new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'}));
                     }
                 });
             }
-
+            
             /*
              * Returns a constructor for the ViewModel so that the ViewModel is constructed
              * each time the view is displayed.  Return an instance of the ViewModel if
