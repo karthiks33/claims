@@ -74,6 +74,9 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
         }
 
         self.createClaim = function (event) {
+            if(!self.dsfs().includes("month")){
+                self.dsfs(self.dsfs() + " months");
+            }
             self.payload = {memberId: self.memberId(),
                 providerId: self.providerId(),
                 vendor: self.vendorId(),
@@ -83,7 +86,7 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
                 placeSvc: self.placeSvc(),
                 payDelay: self.payDelay(),
                 lengthOfStay: self.lengthOfStay(),
-                dsfs: self.dsfs() + " months",
+                dsfs: self.dsfs(),
                 primaryConditionGroup: self.primaryConditionGroup(),
                 charlsonIndex: self.charlsonIndex()};
 
@@ -122,15 +125,17 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
                         console.log("Updated claim...");
                         console.log(data.result);
                         self.notificationMsg(data.result);
+                        $("#notificationText").text(self.notificationMsg());
+                        $("#notification").show();
+             setTimeout( function(){$('#notification').hide();} , 5000);
                     },
                     failure: function () {
                         console.log("Update failed");
                     }
                 });
             }
-            $("#notification").show();
-             setTimeout( function(){$('#notification').hide();} , 5000);
-            $("#notificationText").text(self.notificationMsg());
+            
+            
             document.getElementById(self.mode() + 'Dialog').close();
             // document.getElementById('modalDialog1').close();
         }

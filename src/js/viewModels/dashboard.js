@@ -149,15 +149,17 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', '../commo
                             console.log("Deleted claim...");
                             console.log(data.result);
                             self.notificationMsg(data.result);
+                            $("#notificationText").text(self.notificationMsg());
+                            $("#notification").show();
+                    setTimeout( function(){$('#notification').hide();} , 5000);
                         },
                         failure: function () {
                             console.log("Delete failed");
                         }
                     });
                     document.getElementById('deleteDialog').close();
-                    $("#notification").show();
-                    setTimeout( function(){$('#notification').hide();} , 5000);
-                    $("#notificationText").text(self.notificationMsg());
+                    
+                    
                 };
 
             }
