@@ -21,7 +21,8 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-el
        // Router setup
        self.router = oj.Router.rootInstance;
        self.router.configure({
-         'dashboard': {label: 'Dashboard', isDefault: true},
+         'login': {label: 'Login', isDefault: true},
+         'dashboard': {label: 'Dashboard'},
          'analytics': {label: 'Analytics'},
          'patients': {label: 'Patients'},
          'about': {label: 'About'}
@@ -53,8 +54,6 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-el
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
       {name: 'Analytics', id: 'analytics',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
-      {name: 'Patients', id: 'patients',
-       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-people-icon-24'},
       {name: 'About', id: 'about',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}
       ];
@@ -79,21 +78,39 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-el
       // Application Name used in Branding Area
       self.appName = ko.observable("Claims Analytics Information Management System");
       // User Info used in Global Navigation area
-      self.userLogin = ko.observable("sanjaye2@illinois.com");
-
+      //self.userLogin = ko.observable("sanjaye2@illinois.com");
+      self.userLogin = ko.observable("Not yet logged in");
+      self.userLoggedIn = ko.observable(false);
+      self.userLoggedIn.subscribe(function(newValue){
+          if(newValue){
+              $("#navigation").show();
+          } else {
+             $("#navigation").hide();
+          }
+      });
+      
+      self.menuItemAction = function (event) {
+       var selectedMenuOption = event.path[0].id
+       console.log(selectedMenuOption);
+       if (selectedMenuOption === "sign") {
+           if (!self.userLoggedIn()) {
+           // navigate to the module that allows us to sign in
+           oj.Router.rootInstance.go('login');
+         } else {
+           // sign off
+           self.userLogin("Not yet logged in");
+           self.userLoggedIn(false);
+           oj.Router.rootInstance.go('login');
+         }
+       }
+   }
       // Footer
       function footerLink(name, id, linkTarget) {
         this.name = name;
         this.linkId = id;
         this.linkTarget = linkTarget;
       }
-      self.footerLinks = ko.observableArray([
-        new footerLink('About Oracle', 'aboutOracle', 'http://www.oracle.com/us/corporate/index.html#menu-about'),
-        new footerLink('Contact Us', 'contactUs', 'http://www.oracle.com/us/corporate/contact/index.html'),
-        new footerLink('Legal Notices', 'legalNotices', 'http://www.oracle.com/us/legal/index.html'),
-        new footerLink('Terms Of Use', 'termsOfUse', 'http://www.oracle.com/us/legal/terms/index.html'),
-        new footerLink('Your Privacy Rights', 'yourPrivacyRights', 'http://www.oracle.com/us/legal/privacy/index.html')
-      ]);
+     
      }
 
      return new ControllerViewModel();

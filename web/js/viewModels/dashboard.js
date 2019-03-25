@@ -6,8 +6,9 @@
 /*
  * Your dashboard ViewModel code goes here
  */
-define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', 'ojs/ojknockout', 'ojs/ojtable'],
-        function (oj, ko, $, ArrayDataProvider) {
+define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', '../common', 'ojs/ojknockout', 'ojs/ojtable',
+    'ojs/ojinputtext', 'ojs/ojselectcombobox', 'ojs/ojbutton', 'ojs/ojdialog'],
+        function (oj, ko, $, ArrayDataProvider, commonUtil) {
 
             function DashboardViewModel() {
                 var self = this;
@@ -24,6 +25,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', 'ojs/ojkn
                  */
                 self.connected = function () {
                     // Implement if needed
+                    commonUtil.redirectIfNotLoggedIn();
                 };
 
                 /**
@@ -40,24 +42,126 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', 'ojs/ojkn
                 self.transitionCompleted = function () {
                     // Implement if needed
                 };
-                self.info = ko.observable("Below data is select query from claims table.");
+                self.info = ko.observable("Search, Create, Update, Delete claims data. Search the data based on the available filters, by member, claim, provider or vendor ids.");
                 self.claimsArray = ko.observableArray();
                 self.dataprovider = ko.observable(new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'}));
-                //new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'});
-                $.ajax({
-                    url: window.apiDomain + "/claims/listClaims",
-                    type: 'GET',
-                    success: function (data)
-                    {
-                       // console.log(data);
-                       // self.info(data.length);
-                        self.claimsArray(data);
-                        console.log(self.claimsArray());
-                        self.dataprovider(new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'}));
+                self.searchByColumn = ko.observable("memberId");
+                self.searchByValue = ko.observable();
+                self.selectedItems = ko.observable([]);
+                self.selectedClaimId = ko.observable();
+                self.selectedClaim = ko.observable();
+                self.updateHeader = ko.observable();
+                self.deleteHeader = ko.observable();
+                self.deleteConfirmMsg = ko.observable();
+                self.disableUpdate = ko.observable(true);
+                self.notificationMsg = ko.observable("Deletion api failed");
+                self.selectedClaimId.subscribe(function () {
+                    if (self.selectedClaimId()) {
+                        self.disableUpdate(false);
+                        self.updateHeader("Update Claim ( ID: " + self.selectedClaimId() + " )");
+                        self.deleteHeader("Confirmation: Delete Claim ( ID: " + self.selectedClaimId() + " )");
+                        self.deleteConfirmMsg("Are you sure you want to delete claim with id: " + self.selectedClaimId() + " ?");
+
                     }
                 });
+                //new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'});
+                self.initializeData = function () {
+                    $.ajax({
+                        url: window.apiDomain + "/claims/listClaims",
+                        type: 'GET',
+                        success: function (data)
+                        {
+                            // console.log(data);
+                            // self.info(data.length);
+                            self.claimsArray(data);
+                            console.log(self.claimsArray());
+                            self.dataprovider(new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'}));
+                        }
+                    });
+                }
+                self.initializeData();
+
+                self.searchAction = function (event) {
+                    if (!self.searchByValue()) {
+                        self.initializeData();
+                        return;
+                    }
+                    var urlPath = "/claims/getClaim";
+                    if (self.searchByColumn() === "claimId") {
+                        urlPath += "/claimsId";
+                    } else if (self.searchByColumn() === "memberId") {
+                        urlPath += "/memberId";
+                    } else if (self.searchByColumn() === "providerId") {
+                        urlPath += "/providerId";
+                    } else if (self.searchByColumn() === "vendorId") {
+                        urlPath += "/vendorId";
+                    }
+                    urlPath = window.apiDomain + urlPath + "/" + self.searchByValue();
+                    console.log("UrlPath=" + urlPath);
+                    $.ajax({
+                        url: urlPath,
+                        type: 'GET',
+                        success: function (data)
+                        {
+                            self.claimsArray(data);
+                            console.log(self.claimsArray());
+                            self.dataprovider(new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'}));
+                        }
+                    });
+                };
+
+                self.createClaim = function (event) {
+                    document.getElementById('createDialog').open();
+                };
+                self.updateClaim = function (event) {
+                    document.getElementById('updateDialog').open();
+                };
+                self.deleteClaim = function (event) {
+                    document.getElementById('deleteDialog').open();
+                };
+
+                self.selectionListener = function (event)
+                {
+                    var data = event.detail;
+                    if (event.type === 'selectionChanged' && data['value'] !== null)
+                    {
+                        var rowIndex = data['value'][0]['startIndex'].row;
+                        var claim = self.claimsArray()[rowIndex];
+                        console.log("Selected claim=");
+                        console.log(claim);
+                        self.selectedClaim(claim);
+                        self.selectedClaimId(claim.id);
+                        self.selectedClaim.valueHasMutated();
+                    }
+                };
+
+                self.closeDeletePopup = function (event) {
+                    document.getElementById('deleteDialog').close();
+                }
+                self.deleteClaimConfirmed = function (event) {
+                    console.log("deleting claim with id " + self.selectedClaimId());
+                    var urlPath = window.apiDomain + "/claims/delete/" + self.selectedClaimId();
+                    $.ajax({
+                        url: urlPath,
+                        type: 'DELETE',
+                        success: function (data)
+                        {
+                            console.log("Deleted claim...");
+                            console.log(data.result);
+                            self.notificationMsg(data.result);
+                        },
+                        failure: function () {
+                            console.log("Delete failed");
+                        }
+                    });
+                    document.getElementById('deleteDialog').close();
+                    $("#notification").show();
+                    setTimeout( function(){$('#notification').hide();} , 5000);
+                    $("#notificationText").text(self.notificationMsg());
+                };
+
             }
-            
+
             /*
              * Returns a constructor for the ViewModel so that the ViewModel is constructed
              * each time the view is displayed.  Return an instance of the ViewModel if

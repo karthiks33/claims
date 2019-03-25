@@ -1,42 +1,104 @@
 <!--
  Copyright (c) 2014, 2019, Oracle and/or its affiliates.
  The Universal Permissive License (UPL), Version 1.0
- -->
- <div class="oj-hybrid-padding" >
-  <h1>Claims Data</h1>
-  <div>
-       <div data-bind="text: info" > </div>
-       <oj-table id='table' style="height:90vh;" aria-label='Claims Table'
-                                        data='[[dataprovider]]'
-                                        selection-mode='{"row": "multiple", "column": "multiple"}'
-                                        dnd='{"reorder": {"columns": "enabled"}}'
-                                        scroll-policy='loadMoreOnScroll'
-                                        scroll-policy-options='{"fetchSize": 50}'
-                                        columns='[{"headerText": "Member Id", 
-                                                   "field": "id",
-                                                   "headerClassName": "oj-sm-only-hide",
-                                                   "className": "oj-sm-only-hide",
-                                                   "resizable": "enabled"},
-                                                  {"headerText": "Provider Id", 
-                                                   "field": "providerId",
-                                                   "resizable": "enabled"},
-                                                  {"headerText": "Vendor", 
-                                                   "field": "vendor",
-                                                   "headerClassName": "oj-sm-only-hide",
-                                                   "className": "oj-sm-only-hide",
-                                                   "resizable": "enabled"},
-                                                  {"headerText": "Pcp", "field": "pcp","resizable": "enabled"},
-                                                  {"headerText": "year", "field": "year","resizable": "enabled"},
-                                                  {"headerText": "speciality", "field": "speciality","resizable": "enabled"},
-                                                  {"headerText": "placeSvc", "field": "placeSvc","resizable": "enabled"},
-                                                  {"headerText": "payDelay", "field": "payDelay","resizable": "enabled"},
-                                                  {"headerText": "lengthOfStay", "field": "lengthOfStay","resizable": "enabled"},
-                                                  {"headerText": "dsfs", "field": "dsfs","resizable": "enabled"},
-                                                  {"headerText": "primaryConditionGroup", "field": "primaryConditionGroup","resizable": "enabled"},
-                                                  {"headerText": "charlsonIndex", "field": "charlsonIndex","resizable": "enabled"}
-                                                  
-                                                  ]'
-                                        style='width: 100%; height: 200px;'>
+-->
+
+
+<div class="oj-hybrid-padding" >
+    <h1>Claims Data</h1>
+    <div>
+        <div data-bind="text: info" > </div>
+        <br/>
+        <oj-toolbar id='myToolbar' aria-label='Editing Toolbar' aria-controls='controlled'
+                    class="oj-toolbar-top-border oj-toolbar-bottom-border">
+            <div class="oj-flex-bar" style="width:100%;">
+                <div class="oj-flex-bar-start">
+                    <oj-dialog style="display:none; width:800px;height:550px;" id="createDialog" dialog-title="Create Claim">
+                        <div  data-bind='component: {name:"createClaim",
+                                params:{
+                                    mode: "create"
+                                }}'>
+                        </div>
+                    </oj-dialog>
+                    <oj-dialog style="display:none; width:800px;height:550px;" id="updateDialog" dialog-title="[[updateHeader]]">
+                        <div  data-bind='component: {name:"createClaim",
+                                params:{
+                                    mode: "update",
+                                    selectedClaim: selectedClaim
+                                }}'>
+                        </div>
+                    </oj-dialog>
+                    <oj-dialog style="display:none; width:450px;height:150px;" id="deleteDialog" dialog-title="[[deleteHeader]]">
+                        <div  slot="body">
+                            <div data-bind="text: deleteConfirmMsg"></div>
+                        </div>
+                        <div  slot="footer">
+                            <oj-button   on-oj-action="[[deleteClaimConfirmed]]" >Yes</oj-button>
+        <oj-button   on-oj-action="[[closeDeletePopup]]">No</oj-button>
+                        </div>
+                    </oj-dialog>
+                    <oj-button id='create' on-oj-action="[[createClaim]]">
+                        <span slot='startIcon'><i class="fas fa-plus"></i></span>
+                        Create
+                    </oj-button>
+                    <oj-button id='update' on-oj-action="[[updateClaim]]" disabled="[[disableUpdate]]">
+                        <span slot='startIcon'><i class="far fa-edit"></i></span>
+                        Update
+                    </oj-button>
+                    <oj-button id='delete' on-oj-action="[[deleteClaim]]" disabled="[[disableUpdate]]">
+                        <span slot='startIcon'> <i class="fa fa-trash-alt" ></i></span>
+                        Delete
+                    </oj-button>
+
+
+                </div>
+                <div class="oj-flex-bar-end">
+
+                    <div class="oj-flex oj-lg-align-items-flex-end oj-flex-items-pad">
+                        <div class="oj-flex-item">
+                            <h5>  <div style="text-align: right;">Search By</div></h5>
+                        </div>
+                        <div class="oj-flex-item">  
+                            <oj-combobox-one  value="{{searchByColumn}}"
+                                              style="max-width:20em">
+                                <oj-option value="claimId">Claim Id</oj-option>
+                                <oj-option value="memberId">Member Id</oj-option>
+                                <oj-option value="providerId">Provider Id</oj-option>
+                                <oj-option value="vendorId">Vendor Id</oj-option>
+                            </oj-combobox-one>
+                        </div>
+                        <div class="oj-flex-item">
+                            <oj-input-text  value="{{searchByValue}}"></oj-input-text>
+                        </div>
+                        <oj-button id='searchbtn' on-oj-action='[[searchAction]]'>
+                            <span slot='startIcon'> <i class="fas fa-search"></i></span>
+                            Search</oj-button>
+                    </div>
+                </div>
+
+            </div>
+
+        </oj-toolbar>
+        <oj-table id='table' style="height:60vh;" aria-label='Claims Table'
+                  data='[[dataprovider]]'
+                  selection-mode='{"row": "single"}'
+                  selection='{{selectedItems}}'
+                  on-selection-changed="{{selectionListener}}"
+                  columns='[
+                  {"headerText": "Claim Id","field": "id", "headerClassName": "oj-sm-only-hide","className": "oj-sm-only-hide","resizable": "enabled"},
+                  {"headerText": "Member Id","field": "memberId","headerClassName": "oj-sm-only-hide","className": "oj-sm-only-hide","resizable": "enabled"},
+                  {"headerText": "Provider Id",  "field": "providerId","resizable": "enabled"},
+                  {"headerText": "Vendor",  "field": "vendor", "headerClassName": "oj-sm-only-hide", "className": "oj-sm-only-hide", "resizable": "enabled"},
+                  {"headerText": "Practitioner", "field": "pcp","resizable": "enabled"},
+                  {"headerText": "Speciality", "field": "speciality","resizable": "enabled"},
+                  {"headerText": "Service Place", "field": "placeSvc","resizable": "enabled"},
+                  {"headerText": "Pay Delay", "field": "payDelay","resizable": "enabled"},
+                  {"headerText": "DaysSinceFirstService", "field": "dsfs","resizable": "enabled"},
+                  {"headerText": "ConditionGroup", "field": "primaryConditionGroup","resizable": "enabled"},
+                  {"headerText": "Charlson Index", "field": "charlsonIndex","resizable": "enabled"}
+
+                  ]'
+                  style='width: 100%; height: 200px;'>
         </oj-table>
-  </div>
+    </div>
 </div>

@@ -24,13 +24,16 @@
   section from what is defined, you should also change the role value for that
   section to represent the appropriate content type.
   ***************************** IMPORTANT INFORMATION ************************************ -->
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" 
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
 <html lang="en-us">
   <head>
     <title>Claims Analytics Information Management System</title>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
-    <link rel="icon" href="css/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="css/images/favicon-heartbeat.ico" type="image/x-icon" />
 
     <!-- This is the main css file for the default Alta theme -->
 <!-- injector:theme -->
@@ -88,8 +91,12 @@
               </oj-button>
             </div>
             <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
-              <span role="img" class="oj-icon healthcare-img" title="Healthcare Logo" alt="Healthcare Logo"></span>
-              <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Claims Analytics Information Management System"><oj-bind-text value="[[appName]]"></oj-bind-text></h1>
+                <span slot='startIcon'  style="padding-top: 5px; padding-right: 5px; color: #708090;"> <i class="fa fa-medkit fa-2x"></i></span>
+                 <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Claims Analytics Information Management System"><oj-bind-text value="[[appName]]">
+                          
+                  </oj-bind-text>
+                         
+                      </h1>
             </div>
             <div class="oj-flex-bar-end">
               <!-- Responsive Toolbar -->
@@ -97,17 +104,20 @@
                 <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="half">
                   <span><oj-bind-text value="[[userLogin]]"></oj-bind-text></span>
                   <span slot="endIcon" :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon oj-button-menu-dropdown-icon': !smScreen()}]]"></span>
-                  <oj-menu id="menu1" slot="menu" style="display:none">
-                    <oj-option id="pref" value="pref">Preferences</oj-option>
+                  <oj-menu id="menu1" slot="menu" style="display:none" on-oj-action="[[menuItemAction]]">
+<!--                    <oj-option id="pref" value="pref">Preferences</oj-option>
                     <oj-option id="help" value="help">Help</oj-option>
                     <oj-option id="about" value="about">About</oj-option>
-                    <oj-option id="out" value="out">Sign Out</oj-option>
+                    <oj-option id="out" value="out">Sign Out</oj-option>-->
+                    <oj-option id="sign" value="sign">
+    <span data-bind="text: (userLoggedIn()?'Sign Out':'Sign In/Sign Up')"></span>
+  </oj-option>
                   </oj-menu>
                 </oj-menu-button>
               </oj-toolbar>
             </div>
           </div>
-          <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar">
+            <div role="navigation" class="oj-web-applayout-max-width oj-web-applayout-navbar" id="navigation" >
             <oj-navigation-list class="oj-sm-only-hide oj-md-condense oj-md-justify-content-flex-end"
                                 data="[[navDataSource]]"
                                 edge="top"
@@ -116,6 +126,20 @@
             </oj-navigation-list>
           </div>
         </header>
+        <div class="notification-class">
+            <div class="oj-flex-bar" id="notification" class="notification-class" style="display: none;">
+            <div class="oj-flex-bar-start">
+                <h5 id="notificationText">  </h5>
+            </div>
+            <div class="oj-flex-bar-end">
+                <oj-button  on-oj-action="[[closeNotification]]" display="icons">
+                        <span slot='startIcon'><i class="fa fa-window-close " aria-hidden="true"></i></span>
+                        Create
+                    </oj-button>
+            </div>
+        </div>
+        </div>
+        
         <oj-module role="main" class="oj-web-applayout-max-width oj-web-applayout-content" config="[[moduleConfig]]">
         </oj-module>
         <footer class="oj-web-applayout-footer" role="contentinfo">

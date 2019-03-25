@@ -6,8 +6,8 @@
 /*
  * Your incidents ViewModel code goes here
  */
-define(['ojs/ojcore', 'knockout', 'jquery'],
- function(oj, ko, $) {
+define(['ojs/ojcore', 'knockout', 'jquery', '../common'],
+ function(oj, ko, $, commonUtil) {
   
     function IncidentsViewModel() {
       var self = this;
@@ -24,6 +24,7 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
        */
       self.connected = function() {
         // Implement if needed
+        commonUtil.redirectIfNotLoggedIn();
       };
 
       /**
