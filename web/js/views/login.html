@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<div  class="center">
+    <div class="oj-flex oj-lg-align-items-center oj-flex-items-pad">
+         <div class="oj-flex-item">
+             <h1 >Login to CLAIMS</h1>
+    
+        <oj-form-layout id="form-container" label-edge="top" style="">
+            <oj-input-text id="username" value="{{username}}" label-hint="USERNAME" style="max-width:20em; "></oj-input-text>
+            <oj-input-password id="password" value="{{password}}" label-hint="PASSWORD" style="max-width:20em"></oj-input-password>
+            
+        </oj-form-layout>
+             <br/>
+             <oj-button id='login' on-oj-action='[[loginButtonClick]]' style="width:20em; ">Log in</oj-button>
+             
+             <div data-bind="text: failedMessage" style="color: red;"> </div>
+             <br/>
+             <oj-button id='login' on-oj-action='[[loginButtonClick]]' style="width:10em; text-align: right;  " chroming='half'>Sign up</oj-button>
+             </div>
+    </div>
+</div>
