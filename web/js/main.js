@@ -55,7 +55,7 @@ requirejs.config(
                             oj.Router.sync().then(
                                     function () {
                                         //window.apiDomain = "http://sp19-cs411-02.cs.illinois.edu:8089";
-                                          window.apiDomain = "";
+                                         window.apiDomain = "";
                                         registry.initialize();
                                         app.loadModule();
                                         // Bind your ViewModel for the content of the whole page body.

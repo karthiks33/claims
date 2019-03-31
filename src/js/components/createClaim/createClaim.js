@@ -15,17 +15,17 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
     {
         var self = this;
         self.claimId = ko.observable();
-        self.memberId = ko.observable(69237);
-        self.providerId = ko.observable(126927354);
-        self.vendorId = ko.observable(1675623);
-        self.pcp = ko.observable(66823);
+        self.memberId = ko.observable();
+        self.providerId = ko.observable();
+        self.vendorId = ko.observable();
+        self.pcp = ko.observable();
         self.year = ko.observable("Y1");
-        self.speciality = ko.observable("Internal");
-        self.placeSvc = ko.observable("Urgent Care");
+        self.speciality = ko.observable();
+        self.placeSvc = ko.observable();
         self.payDelay = ko.observable(0);
         self.lengthOfStay = ko.observable();
         self.dsfs = ko.observable("0-1");
-        self.primaryConditionGroup = ko.observable("ROAMI");
+        self.primaryConditionGroup = ko.observable();
         self.charlsonIndex = ko.observable("0");
 
         self.mode = ko.observable("create");
@@ -33,6 +33,7 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
 
         self.selectedClaim = ko.observable();
         self.notificationMsg = ko.observable("Create/Update Api failed.");
+        self.refresh = ko.observable();
 
 
         if (params) {
@@ -66,12 +67,22 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
                 self.mode(params.mode);
 
             }
+            if (params.refresh) {
+                self.refresh = params.refresh;
+
+            }
         }
         if (self.mode() === "create") {
             self.actionBtnTxt("Create");
         } else {
             self.actionBtnTxt("Update");
         }
+        
+        self.showNotification = function(){
+            $("#notificationText").text(self.notificationMsg());
+                        $("#notification").show();
+             setTimeout( function(){$('#notification').hide();} , 20000);
+        };
 
         self.createClaim = function (event) {
             if(!self.dsfs().includes("month")){
@@ -105,6 +116,8 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
                         console.log("Created claim...");
                         console.log(data.result);
                         self.notificationMsg(data.result);
+                        self.showNotification();
+                        self.refresh();
                     },
                     failure: function () {
                         console.log("Create failed");
@@ -125,12 +138,12 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
                         console.log("Updated claim...");
                         console.log(data.result);
                         self.notificationMsg(data.result);
-                        $("#notificationText").text(self.notificationMsg());
-                        $("#notification").show();
-             setTimeout( function(){$('#notification').hide();} , 5000);
+                        self.showNotification();
+                        self.refresh();
                     },
                     failure: function () {
                         console.log("Update failed");
+                        self.showNotification();
                     }
                 });
             }

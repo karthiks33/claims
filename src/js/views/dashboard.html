@@ -16,7 +16,8 @@
                     <oj-dialog style="display:none; width:800px;height:550px;" id="createDialog" dialog-title="Create Claim">
                         <div  data-bind='component: {name:"createClaim",
                                 params:{
-                                    mode: "create"
+                                    mode: "create",
+                                   refresh: initializeData
                                 }}'>
                         </div>
                     </oj-dialog>
@@ -24,7 +25,8 @@
                         <div  data-bind='component: {name:"createClaim",
                                 params:{
                                     mode: "update",
-                                    selectedClaim: selectedClaim
+                                    selectedClaim: selectedClaim,
+                                    refresh: initializeData
                                 }}'>
                         </div>
                     </oj-dialog>

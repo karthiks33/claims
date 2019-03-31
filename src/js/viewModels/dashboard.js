@@ -45,7 +45,7 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', '../commo
                 self.info = ko.observable("Search, Create, Update, Delete claims data. Search the data based on the available filters, by member, claim, provider or vendor ids.");
                 self.claimsArray = ko.observableArray();
                 self.dataprovider = ko.observable(new ArrayDataProvider(self.claimsArray(), {keyAttributes: 'id'}));
-                self.searchByColumn = ko.observable("memberId");
+                self.searchByColumn = ko.observable("claimId");
                 self.searchByValue = ko.observable();
                 self.selectedItems = ko.observable([]);
                 self.selectedClaimId = ko.observable();
@@ -138,6 +138,14 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', '../commo
                 self.closeDeletePopup = function (event) {
                     document.getElementById('deleteDialog').close();
                 }
+                self.showNotification = function () {
+                    $("#notificationText").text(self.notificationMsg());
+                    $("#notification").show();
+                    setTimeout(function () {
+                        $('#notification').hide();
+                    }, 20000);
+                };
+
                 self.deleteClaimConfirmed = function (event) {
                     console.log("deleting claim with id " + self.selectedClaimId());
                     var urlPath = window.apiDomain + "/claims/delete/" + self.selectedClaimId();
@@ -149,19 +157,19 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', '../commo
                             console.log("Deleted claim...");
                             console.log(data.result);
                             self.notificationMsg(data.result);
-                            $("#notificationText").text(self.notificationMsg());
-                            $("#notification").show();
-                    setTimeout( function(){$('#notification').hide();} , 5000);
+                            self.showNotification();
+
+                            self.initializeData();
                         },
                         failure: function () {
                             console.log("Delete failed");
+                            self.showNotification();
                         }
                     });
                     document.getElementById('deleteDialog').close();
-                    
-                    
-                };
 
+
+                };
             }
 
             /*
