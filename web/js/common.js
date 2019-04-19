@@ -19,7 +19,7 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
                          
                     } else {
                         //redirect to login module
-                        self.router.go("login");
+                       // self.router.go("login");
                         
                     }
                 }

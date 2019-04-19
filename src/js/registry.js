@@ -24,6 +24,26 @@ function (ko) {
                     });
                     console.log("Done: Registering createClaim ");
                 }
+                if (!ko.components.isRegistered('riskLevelCat'))
+                {
+                    console.log("Registering riskLevelCat");
+                    ko.components.register("riskLevelCat", {
+                        viewModel: {require: 'components/riskLevelCat/riskLevelCat'},
+                        template: {require: 'text!components/riskLevelCat/riskLevelCat.html'},
+                        synchronous: true
+                    });
+                    console.log("Done: Registering riskLevelCat ");
+                }
+                if (!ko.components.isRegistered('ageToRisk'))
+                {
+                    console.log("Registering ageToRisk");
+                    ko.components.register("ageToRisk", {
+                        viewModel: {require: 'components/ageToRisk/ageToRisk'},
+                        template: {require: 'text!components/ageToRisk/ageToRisk.html'},
+                        synchronous: true
+                    });
+                    console.log("Done: Registering ageToRisk ");
+                }
             }
       return commonRegistry;
 

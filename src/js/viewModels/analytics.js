@@ -9,7 +9,7 @@
 define(['ojs/ojcore', 'knockout', 'jquery', '../common'],
  function(oj, ko, $, commonUtil) {
   
-    function IncidentsViewModel() {
+    function AnalyticsViewModel() {
       var self = this;
       // Below are a set of the ViewModel methods invoked by the oj-module component.
       // Please reference the oj-module jsDoc for additional information.
@@ -58,6 +58,6 @@ define(['ojs/ojcore', 'knockout', 'jquery', '../common'],
      * each time the view is displayed.  Return an instance of the ViewModel if
      * only one instance of the ViewModel is needed.
      */
-    return new IncidentsViewModel();
+    return new AnalyticsViewModel();
   }
 );

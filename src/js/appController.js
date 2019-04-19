@@ -21,10 +21,10 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-el
        // Router setup
        self.router = oj.Router.rootInstance;
        self.router.configure({
-         'login': {label: 'Login', isDefault: true},
-         'dashboard': {label: 'Dashboard'},
+         'login': {label: 'Login'},
+         'dashboard': {label: 'Dashboard', isDefault: true},
          'analytics': {label: 'Analytics'},
-         'patients': {label: 'Patients'},
+         'chatbot': {label: 'Chatbot'},
          'about': {label: 'About'}
        });
       oj.Router.defaults['urlAdapter'] = new oj.Router.urlParamAdapter();
@@ -54,6 +54,8 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-el
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chart-icon-24'},
       {name: 'Analytics', id: 'analytics',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-fire-icon-24'},
+      {name: 'Chatbot', id: 'chatbot',
+       iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-chat-icon-24'},
       {name: 'About', id: 'about',
        iconClass: 'oj-navigationlist-item-icon demo-icon-font-24 demo-info-icon-24'}
       ];
@@ -88,7 +90,7 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojmodule-element-utils', 'ojs/ojmodule-el
              $("#navigation").hide();
           }
       });
-      
+      self.userLoggedIn(true);
       self.menuItemAction = function (event) {
        var selectedMenuOption = event.path[0].id
        console.log(selectedMenuOption);

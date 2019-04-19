@@ -1,0 +1,23 @@
+<!--
+ Copyright (c) 2014, 2019, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+-->
+<div class="oj-hybrid-padding">
+    <h1>Chatbot</h1>
+    
+    <div id="ansArea" style="max-height: 32em;height: 32em; display: block; overflow: auto;">
+        <div class="container">
+              <i class="fab fa-android fa-3x"  ></i>  
+  <p>Hello. How can i help you..</p>
+  <span class="time-right"></span>
+</div>
+    </div>
+    <div class="oj-flex-bar" style="width:100%;">
+        <div class="oj-flex-bar-start" style="width:100%;">
+            <oj-text-area  autofocus  value="{{userText}}" placeholder="Type your question here..." style="max-width:100%; height: 3.5em;"> </oj-text-area>
+        </div>
+        <div class="oj-flex-bar-end">
+            
+            <oj-button id="send" class='oj-button-primary' on-oj-action="[[processText]]" style="padding-left: 10px; height: 3.5em;">Send</oj-button>
+        </div>
+    </div> 

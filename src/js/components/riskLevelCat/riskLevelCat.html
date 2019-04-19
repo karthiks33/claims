@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<style>
+    .piechartStyle{
+       
+    } 
+    
+    .piechartDivStyle{
+       width: 25%;
+    }
+    
+</style>
+ <div class="oj-flex-bar" style="width:100%;">
+     <div class="oj-flex-bar-start">
+         <h3 data-bind="text: header"></h3>
+</div>
+     <div class="oj-flex-bar-end">
+         <div class='oj-flex-bar'>
+              <div class='oj-flex-bar-start'>  
+         <div class="oj-flex oj-lg-align-items-flex-end oj-flex-items-pad">
+                        <div class="oj-flex-item">
+                            <h5>  <div style="text-align: right;">Categorize By</div></h5>
+                        </div>
+                        <div class="oj-flex-item">  
+                            <oj-combobox-one  value="{{categorizeByColumn}}" on-value-changed="[[categoryChangeHandler]]"
+                                              style="width:15em">
+                                <oj-option value="charlsonIndex">Charlson Index</oj-option>
+                                <oj-option value="primaryCondGroup">Primary Condition Group</oj-option>
+                                <oj-option value="lengthofStay">Length of Stay</oj-option>
+                            </oj-combobox-one>
+                        </div>
+                         
+                    </div>
+              </div>
+             <div class='oj-flex-bar-end'>   
+                 <div class='oj-flex-bar' style="padding-left: 2em;">
+              <div class='oj-flex-bar-start'>      
+                <oj-label id="mainlabelid"  
+                       class="oj-label-inline">Graph</oj-label>
+              </div>
+              <div class='oj-flex-bar-middle'>                 
+                <!-- You need to set the labelled-by attribute to make 
+                this accessible. -->
+                <oj-radioset labelled-by="mainlabelid" class="oj-choice-direction-row" value="{{graphVal}}">
+                  <oj-option id="pie" value="pie">Pie</oj-option>
+                  <oj-option id="bar" value="bar">Bar</oj-option>
+                </oj-radioset>
+              </div>
+            </div>
+             </div>
+         </div>
+     </div>
+ </div>
+<br/>
+ <div id='pieChartDiv' class="oj-flex" style="text-align:center;">
+          <div class="piechartDivStyle">
+            <h2 data-bind="text: pie1Title"></h2>
+            <oj-chart id="pieChart1" 
+              type="pie" 
+              series="[[pieSeries1Value]]"
+              animation-on-display="auto"
+              animation-on-data-change="auto"
+              hidden-categories="{{hiddenCategoriesValue}}"
+              highlighted-categories="{{highlightedCategoriesValue}}"
+              hover-behavior="dim"
+              legend.rendered="off"
+               style-defaults.three-d-effect="[[threeDValue]]"
+              class="piechartStyle">
+            </oj-chart>
+          </div>
+          <div class="piechartDivStyle">
+            <h2 data-bind="text: pie2Title"></h2>
+            <oj-chart id="pieChart2"
+              type="pie" 
+              series="[[pieSeries2Value]]"
+              animation-on-display="auto"
+              animation-on-data-change="auto"
+              hidden-categories="{{hiddenCategoriesValue}}"
+              highlighted-categories="{{highlightedCategoriesValue}}"
+              hover-behavior="dim"
+              legend.rendered="off"
+               style-defaults.three-d-effect="[[threeDValue]]"
+              class="piechartStyle">
+            </oj-chart>
+          </div>
+          <div class="piechartDivStyle">
+            <h2 data-bind="text: pie3Title"></h2>
+            <oj-chart id="pieChart3"
+              type="pie" 
+              series="[[pieSeries3Value]]"
+              animation-on-display="auto"
+              animation-on-data-change="auto"
+              hidden-categories="{{hiddenCategoriesValue}}"
+              highlighted-categories="{{highlightedCategoriesValue}}"
+              hover-behavior="dim"
+              legend.rendered="off"
+               style-defaults.three-d-effect="[[threeDValue]]"
+              class="piechartStyle">
+            </oj-chart>
+          </div>
+          <div class="piechartDivStyle">
+            <h2 data-bind="text: pie4Title"></h2>
+            <oj-chart id="pieChart4" 
+              type="pie" 
+              series="[[pieSeries4Value]]"
+              animation-on-display="auto"
+              animation-on-data-change="auto"
+              hidden-categories="{{hiddenCategoriesValue}}"
+              highlighted-categories="{{highlightedCategoriesValue}}"
+              hover-behavior="dim"
+              legend.rendered="off"
+               style-defaults.three-d-effect="[[threeDValue]]"
+              class="piechartStyle">
+            </oj-chart>
+          </div>
+        <div class="oj-flex-bar" style="width:100%;">
+            
+        <oj-legend 
+          id="legend1" 
+          aria-controls="pieChart1 pieChart2 pieChart3 pieChart4 pieChart5"
+          orientation="horizontal"
+          sections="[[legendSections]]"
+          halign="center" 
+          valign="middle"
+          hidden-categories="{{hiddenCategoriesValue}}"
+          highlighted-categories="{{highlightedCategoriesValue}}"
+          hover-behavior="dim"
+          hide-and-show-behavior="on"
+          style="height:5em; width: 100%;">
+        </oj-legend>
+                  </div>   
+        </div>
+
+<div id="barChartDiv" style="display:none;">
+    <oj-chart id="barChart"
+                type="bar" 
+                series="[[barSeriesValue]]"
+                groups="[[barGroupsValue]]" 
+                animation-on-display="auto"
+                animation-on-data-change="auto"
+                orientation="[[orientationValue]]"
+                style-defaults.data-label-position="[[labelPosition]]"
+                stack="[[stackValue]]"
+                stack-label="[[stackLabelValue]]"
+                y-axis.tick-label.rendered="off"
+                style="max-width:500px;width:100%;height:350px;margin-top:20px;">
+            </oj-chart>
+</div>
