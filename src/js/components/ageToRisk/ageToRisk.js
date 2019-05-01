@@ -6,8 +6,7 @@
 
 
 
-define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'ojs/ojchart', 'ojs/ojtoolbar', 'ojs/ojselectcombobox',
-         'ojs/ojlabel'
+define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojknockout', 'ojs/ojchart','ojs/ojlegend'
      ], function (oj, ko)
 {
     /**
@@ -16,29 +15,72 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojbutton', 'o
    function AgeToRiskChartModel() {
         var self = this;
         
-        /* toggle button variables */
-        self.stackValue = ko.observable('on');
-        self.stackLabelValue = ko.observable('on');
-        self.orientationValue = ko.observable('vertical');
-        self.labelPosition = ko.observable('auto');
-
         /* chart data */
-        var barSeries = [{name: "Risk A", items: [{y:42, label:"42"}, {y:34, label:"34"},
-                          {y:42, label:"42"}, {y:34, label:"34"}]},
-                         {name: "Risk B", items: [{y:55, label:"55"}, {y:30, label:"30"},
-                         {y:55, label:"55"}, {y:30, label:"30"}]},
-                         {name: "Risk C", items: [{y:36, label:"36"}, {y:50, label:"50"},
-                         {y:36, label:"36"}, {y:50, label:"50"}]},
-                         {name: "Risk D", items: [{y:22, label:"22"}, {y:22, label:"22"},
-                         {y:22, label:"22"}, {y:22, label:"22"}]}];
-    
-        var barGroups = ["Below 25", "26-50","51-75", "76 & Above"];
-   
-        self.barSeriesValue = ko.observableArray(barSeries);
-        self.barGroupsValue = ko.observableArray(barGroups);
+        var colorHandler = new oj.ColorAttributeGroupHandler();
+    var shapeHandler = new oj.ShapeAttributeGroupHandler();
+    shapeHandler.getValue();
+ 
         
+
+        self.seriesItems = ko.observableArray([]);
+        self.bubbleGroups = ko.observableArray(["male", "female"]);
+ 
+        var legendSections = {sections: [
+            {title: "Gender", items: [
+                {markerShape:shapeHandler.getValue("male"), text: "male", id: "male"},
+                {markerShape:shapeHandler.getValue("female"), text: "female", id: "female"}
+            ]}
+        ]};
+        self.legendSections = ko.observable(legendSections);
+       initializeData();
        
-       
+       function initializeData(){
+           
+           $.ajax({
+                        url: window.apiDomain + "/claims/getClusterGroups",
+                        type: 'GET',
+                        success: function (data)
+                        {
+                             
+                            for (var i = 0; i < data.length; i++) {
+                                var groupdata = data[i];
+                                
+                                if (groupdata.groupName && groupdata.memberDetails) {
+                                    
+                                    var items = [];
+                                    
+                                    for (var j = 0; j < groupdata.memberDetails.length; j++) {
+                                        var memberdata = groupdata.memberDetails[j];
+                                       
+                                        items.push({
+                x: memberdata.age * 10 - Math.floor(Math.random() * 11), y: memberdata.riskLevel - (Math.random()),
+                color: colorHandler.getValue(groupdata.groupName),
+                markerShape: shapeHandler.getValue(memberdata.gender),
+                categories: [ groupdata.groupName, memberdata.gender],
+                shortDesc: groupdata.groupName + " " + memberdata.gender + "&lt;br/&gt;Age: " +
+                    memberdata.age + "&lt;br/&gt;riskLevel: " + memberdata.riskLevel
+            });
+                                    }
+                                    
+                                     self.seriesItems().push({name: groupdata.groupName, displayInLegend: 'off', items: items});
+                                }
+                            }
+                            self.seriesItems.valueHasMutated();
+                            var groupsLegend = {title: "Groups", items: []};
+                            for (var i = 0; i < self.seriesItems().length; i++) {
+                                
+                                var groupName = self.seriesItems()[i].name;
+                                groupsLegend.items.push({color: colorHandler.getValue(groupName), text: groupName, id: groupName});
+                            }
+                            legendSections.sections.push(groupsLegend);
+                            
+                             self.legendSections(legendSections);
+                             console.log(self.legendSections());
+                            
+                        }
+                    });
+                    
+       }
     }
 
     return AgeToRiskChartModel;

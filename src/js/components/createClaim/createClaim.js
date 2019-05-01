@@ -119,8 +119,11 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
                         self.showNotification();
                         self.refresh();
                     },
-                    failure: function () {
+                    error: function (data) {
                         console.log("Create failed");
+                        console.log(data.responseJSON.result);
+                        self.notificationMsg(data.responseJSON.result);
+                        self.showNotification();
                     }
                 });
             } else if (self.mode() === "update") {
@@ -141,8 +144,10 @@ define(['ojs/ojcore', 'knockout', 'ojs/ojinputtext', 'ojs/ojlabel', 'ojs/ojforml
                         self.showNotification();
                         self.refresh();
                     },
-                    failure: function () {
+                    error: function () {
                         console.log("Update failed");
+                        console.log(data.responseJSON.result);
+                        self.notificationMsg(data.responseJSON.result);
                         self.showNotification();
                     }
                 });

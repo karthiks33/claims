@@ -26,6 +26,21 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', '../commo
                 self.connected = function () {
                     // Implement if needed
                     commonUtil.redirectIfNotLoggedIn();
+                    self.isAdmin(commonUtil.isAdmin());
+
+
+                    if (self.isAdmin()) {
+                        $("#adminOp").show();
+                        self.info("Search, Create, Update, Delete claims data. Search the data based on the available filters, by member, claim, provider or vendor ids.");
+                
+                    } else {
+                        $("#adminOp").hide();
+                       self.info("Search the data based on the available filters, by member, claim, provider or vendor ids.");
+
+                    }
+                    self.initializeData();
+
+
                 };
 
                 /**
@@ -55,6 +70,9 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', '../commo
                 self.deleteConfirmMsg = ko.observable();
                 self.disableUpdate = ko.observable(true);
                 self.notificationMsg = ko.observable("Deletion api failed");
+                self.isAdmin = ko.observable(true);
+                self.isAdmin(commonUtil.isAdmin());
+
                 self.selectedClaimId.subscribe(function () {
                     if (self.selectedClaimId()) {
                         self.disableUpdate(false);
@@ -161,8 +179,10 @@ define(['ojs/ojcore', 'knockout', 'jquery', 'ojs/ojarraydataprovider', '../commo
 
                             self.initializeData();
                         },
-                        failure: function () {
+                        error: function (data) {
                             console.log("Delete failed");
+                            console.log(data.responseJSON.result);
+                            self.notificationMsg(data.responseJSON.result);
                             self.showNotification();
                         }
                     });

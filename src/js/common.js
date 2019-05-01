@@ -15,15 +15,28 @@ define(['ojs/ojcore', 'knockout', 'jquery'],
                     var rootViewModel = ko.dataFor(document.getElementById('globalBody'));
                     if (rootViewModel.userLoggedIn()) {
                         //do nothing
-                        console.log("User logged in: " + rootViewModel.userLogin);
+                        console.log("User logged in: " + rootViewModel.userLogin());
                          
                     } else {
                         //redirect to login module
-                       // self.router.go("login");
+                        self.router.go("login");
                         
                     }
                 }
-                return {redirectIfNotLoggedIn : redirectIfNotLoggedIn};
+                function isAdmin() {
+                    var rootViewModel = ko.dataFor(document.getElementById('globalBody'));
+                    if (rootViewModel.userLogin && rootViewModel.userLogin() === "admin") {
+                        //do nothing
+                        console.log("It is admin ");
+                        return true;
+                         
+                    } 
+                    console.log("It is not admin ");
+                        return false;
+                }
+                
+                return {redirectIfNotLoggedIn : redirectIfNotLoggedIn,
+                isAdmin: isAdmin};
             }
             return new CommonModel();
         }

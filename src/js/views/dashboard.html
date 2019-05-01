@@ -4,15 +4,15 @@
 -->
 
 
-<div class="oj-hybrid-padding" >
+<div >
     <h1>Claims Data</h1>
-    <div>
+    <div >
         <div data-bind="text: info" > </div>
         <br/>
         <oj-toolbar id='myToolbar' aria-label='Editing Toolbar' aria-controls='controlled'
                     class="oj-toolbar-top-border oj-toolbar-bottom-border">
             <div class="oj-flex-bar" style="width:100%;">
-                <div class="oj-flex-bar-start">
+                <div class="oj-flex-bar-start" id="adminOp">
                     <oj-dialog style="display:none; width:800px;height:550px;" id="createDialog" dialog-title="Create Claim">
                         <div  data-bind='component: {name:"createClaim",
                                 params:{
