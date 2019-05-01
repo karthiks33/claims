@@ -1,0 +1,18 @@
+<div class="oj-hybrid-padding">
+    <h1>User Activities</h1>
+    <div>
+        <div data-bind="text: info" > </div>
+        <oj-table id='table' aria-label='User Activities'
+                  data='[[dataprovider]]'
+                  dnd='{"reorder": {"columns": "enabled"}}'
+                  scroll-policy='loadMoreOnScroll'
+                  scroll-policy-options='{"fetchSize": 100}'
+                  columns='[
+                  {"headerText": "Activity", "field": "activity","resizable": "enabled"},
+                  {"headerText": "Execution Time", "field": "createdAt","resizable": "enabled"}
+                  ]'
+                  style='width: 100%;'>
+
+        </oj-table>
+    </div>
+</div>
